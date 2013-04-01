@@ -66,7 +66,7 @@ function openMap() {
 }
 
 function getSubscriberData() {
-    $.post("http://stat.astsystems.ru/scripts/get_subscriber_data.php", {'account': $('#id_account').val()},
+    $.post(subscriber_data_url, {'account': $('#id_account').val()},
         function(data) {
             data = jQuery.parseJSON(data);
             if (data.status) {
