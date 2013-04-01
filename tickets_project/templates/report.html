@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block additional_actions %}
+<a href="javascript:window.print()">Печать</a>
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/print.css" media="print" />
+
+{% for ticket in tickets %}
+<div class="report">
+<img src="/static/img/logo.gif" class="logo">
+<div class="clear"></div>
+{% include "report_header.html" %}
+
+<h3 class="center">
+    Наряд №{{ ticket.id }} от {{ ticket.date_assigned }}
+</h3>
+
+<p><strong>Описание:</strong> {{ ticket.description }}</p>
+
+<table class="table">
+    <tr>
+        <td width="100">№ Договора</td>
+        <td>{% if ticket.account %} {{ ticket.account }} {% endif %}</td>
+    </tr>
+    <tr>
+        <td>ФИО абонента</td>
+        <td>{% if ticket.name %} {{ ticket.name }} {% endif %}</td>
+    </tr>
+    <tr>
+        <td>Адрес</td>
+        <td>{{ ticket.address }}</td>
+    </tr>
+    <tr>
+        <td>Телефон</td>
+        <td>{{ ticket.phone }}</td>
+    </tr>
+    <tr>
+        <td>Тех. данные</td>
+        <td>{{ ticket.technical_data }}</td>
+    </tr>
+</table>
+
+<h3 class="center">
+    Наименование работ
+</h3>
+
+<table class="table center">
+<tr>
+    <th width="30">
+        №
+    </th>
+    <th>
+        Наименование работы
+    </th>
+    <th>
+        Стоимость работ, руб.
+    </th>
+</tr>
+<tr>
+    <td>1</td>
+    <td> </td>
+    <td> </td>
+</tr>
+<tr>
+    <td>2</td>
+    <td> </td>
+    <td> </td>
+</tr>
+<tr>
+    <td colspan="2" class="right">Итого:</td>
+    <td> </td>
+</tr>
+</table>
+
+<table width="100%">
+<tr>
+    <td colspan="4">С объемом работ согласен, с правилами предоставления услуг согласен, со списанием полной суммы со своего счета согласен</td>
+</tr>
+<tr>
+    <td>"____" ___________ {% now "Y" %} г.</td>
+    <td>__________________</td>
+    <td>__________________</td>
+</tr>
+<tr class="signatures">
+    <td>(дата выполнения работ)</td>
+    <td>(ФИО абонента)</td>
+    <td>подпись</td>
+</tr>
+<tr>
+    <td colspan="4"></td>
+</tr>
+
+<tr>
+    <td colspan="4">Работу выполнил</td>
+</tr>
+<tr>
+    <td>"____" ___________ {% now "Y" %} г.</td>
+    <td class="underline">{{ ticket.team }}</td>
+    <td>__________________</td>
+</tr>
+<tr class="signatures">
+    <td>(дата выполнения работ)</td>
+    <td>(ФИО)</td>
+    <td>подпись</td>
+</tr>
+</table>
+<div class="page-break"></div>
+{% if ticket.image %} <div class="ticket-image"><img src="/media/{{ ticket.image }}"></div>{% endif %}
+</div>
+<div class="page-break"></div>
+{% endfor %}
+{% endblock %}

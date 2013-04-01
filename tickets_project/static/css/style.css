@@ -1,0 +1,115 @@
+.loading {
+    background-image: url('../img/loading.gif');
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.login_panel {
+    float: right;
+    position: absolute;
+    right: 20px;
+}
+
+h1 {
+    margin: 0;
+}
+
+.filter_element {
+    float: left;
+    margin-left: 15px;
+}
+
+#id_address, #id_name {
+    width: 300px;
+}
+
+.additional_action, label.error {
+    margin-left: 5px;
+}
+
+label.error {
+    color: red;
+}
+
+.results {
+    margin-top: 40px;
+    width: 100%;
+    text-align: center;
+}
+
+.calendar {
+    width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 14px;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.logo {
+    float: right;
+    margin: 30px 0 15px;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.table th, .table td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.table {
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bank-data {
+    float: left;
+    width: 300px;
+}
+
+.fc-slot0, .fc-slot1, .fc-slot2, .fc-slot3, .fc-slot4, .fc-slot5, .fc-slot6, .fc-slot7,
+.fc-slot8, .fc-slot9, .fc-slot10, .fc-slot11, .fc-slot12, .fc-slot13, .fc-slot14, .fc-slot15,
+.fc-slot42, .fc-slot43, .fc-slot44, .fc-slot45, .fc-slot46, .fc-slot47 {
+    display: none;
+}
+
+.report {
+    font-size: 14px;
+}
+
+.report .table th, .report .table td {
+    padding: 5px;
+}
+
+.page-break  {
+    display: none;
+}

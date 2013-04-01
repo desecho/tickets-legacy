@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link href="/static/libs/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<link href="/static/libs/fullcalendar/fullcalendar.print.css" rel="stylesheet" media='print' />
+<script src="/static/libs/fullcalendar/fullcalendar.min.js"></script>
+
+<script src="/static/libs/jquery_qtip/jquery.qtip.min.js"></script>
+<link href="/static/libs/jquery_qtip/jquery.qtip.min.css" rel="stylesheet" />
+
+<script>
+    $(function() {
+        $('#calendar').fullCalendar({
+            firstDay: 1,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+            monthNamesShort: ['Янв.','Фев.','Март','Апр.','Май','Июнь','Июль','Авг.','Сент.','Окт.','Ноя.','Дек.'],
+            dayNames: ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"],
+            dayNamesShort: ["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"],
+            buttonText: {
+                prev: "&nbsp;&#9668;&nbsp;",
+                next: "&nbsp;&#9658;&nbsp;",
+                prevYear: "&nbsp;&lt;&lt;&nbsp;",
+                nextYear: "&nbsp;&gt;&gt;&nbsp;",
+                today: "Сегодня",
+                month: "Месяц",
+                week: "Неделя",
+                day: "День"
+            },
+            /*editable: true,*/
+            events: [
+            {% for ticket in tickets %}
+                {
+                    title: '{{ ticket.title }}',
+                    start: new Date({{ ticket.year }}, {{ ticket.month }}, {{ ticket.day }}, {{ ticket.hour_start }}, {{ ticket.minute_start }}),
+                    end: new Date({{ ticket.year }}, {{ ticket.month }}, {{ ticket.day }}, {{ ticket.hour_end }}, {{ ticket.minute_end }}),
+                    {% autoescape off %}
+                        description: '{{ ticket.description }}',
+                    {% endautoescape %}
+                    allDay: false,
+                    url: '{% url 'tickets.views.edit_ticket' ticket.id %}',
+                    backgroundColor: '{{ ticket.color }}',
+                },
+            {% endfor %}
+
+            {% for day_off in days_off %}
+                {
+                    title: '{{ day_off.name }}',
+                    start: new Date({{ day_off.year }}, {{ day_off.month }}, {{ day_off.day }}),
+                    backgroundColor: '#F52887',
+                    description: 'Выходной',
+                },
+            {% endfor %}
+
+            {% for dinner in dinners %}
+                {
+                    title: '{{ dinner.name }}',
+                    start: new Date({{ dinner.year }}, {{ dinner.month }}, {{ dinner.day }}, {{ dinner.hour_start }}, {{ dinner.minute_start }}),
+                    end: new Date({{ dinner.year }}, {{ dinner.month }}, {{ dinner.day }}, {{ dinner.hour_end }}, {{ dinner.minute_end }}),
+                    backgroundColor: '#F52887',
+                    description: 'Обед',
+                    allDay: false,
+                },
+            {% endfor %}
+
+            ],
+            eventTextColor: "#000",
+            eventBorderColor: "#000",
+            timeFormat: 'H(:mm)',
+            eventClick: function(event) {
+                if (event.url) {
+                    window.open(event.url);
+                    return false;
+                }
+            },
+            eventRender: function(event, element) {
+                element.qtip({
+                    content: event.description
+                });
+            }
+        });
+    });
+</script>
+<a href="/">Назад</a>
+<br><br>
+<div id="calendar" class="calendar"></div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="/static/libs/jquery-validation-plugin/jquery.validate.min.js"></script>
+<script src="/static/libs/jquery-validation-plugin/validate.messages_ru.js"></script>
+
+<script src="/static/js/settings.js"></script>
+<script src="/static/js/edit_ticket.js"></script>
+ <a href="/">Назад</a>
+<br><br>
+{% if status %}
+    <script>
+        displayMessage('{{ status }}')
+    </script>
+{% endif %}
+<form enctype="multipart/form-data" action="" method="POST" id="ticket">
+    {% csrf_token %}
+    {% if ticket %}
+        Добавлена: {{ ticket.user_created }} ({{ ticket.date_created }})<br>
+        Изменена: {{ ticket.user_modified }} ({{ ticket.date_modified }})<br>
+    {% endif %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <p>
+        <input type="button" value="{{ submit_name }}" onclick="submitTicket()">
+        {% if perms.tickets.can_change_ticket_status and ticket.status %}
+            <input type="button" value="Закрыть заявку" onclick="closeTicket()">
+        {% endif %}
+    </p>
+</form>
+
+{% for record in change_log %}
+    {{ record.date }} - {{ record.user }} - {{ record.action }}<br>
+{% endfor %}
+
+
+{% endblock %}

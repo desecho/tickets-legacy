@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="/static/libs/jquery_jgrowl/jquery.jgrowl.css" />
+    <link href="/static/libs/jquery_ui_bootstrap/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+    <link href="/static/libs/timepicker_addon/timepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+
+    <script src="/static/libs/jquery_jgrowl/jquery.jgrowl.min.js"></script>
+
+    <script src="/static/libs/timepicker_addon/jquery-ui-timepicker-addon.js"></script>
+    <script src="/static/libs/timepicker_addon/jquery-ui-timepicker-ru.js"></script>
+
+    <script src="/static/js/main.js"></script>
+
+    <meta charset="utf-8">
+    <title>{% block title %}Заявки{% endblock %}</title>
+</head>
+<body>
+    <div class="login_panel">
+        <a href="/logout/">Выход</a><br>
+        {% block additional_actions %}
+	    {% endblock %}
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
