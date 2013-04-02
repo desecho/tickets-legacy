@@ -32,6 +32,7 @@ The interface is in Russian.
 
 * Insert your database settings and modify the variables in the following file:
     * /tickets_project/settings.py
+
 * Modify the following files:
     * /templates/report_header.html
     * /static/js/settings.js
