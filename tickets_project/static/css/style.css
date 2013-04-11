@@ -113,3 +113,7 @@ label.error {
 .page-break  {
     display: none;
 }
+
+.ui-datepicker-today a {
+    background-color: lightblue !important;
+}

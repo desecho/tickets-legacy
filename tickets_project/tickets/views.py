@@ -15,12 +15,6 @@ import copy
 from django.conf import settings
 from days_time import getTeamDaysOff, checkIfDayOfWeekInDayOfWeekList, get_dinner_time
 
-# import os
-# BASE_DIR = '/home/desecho/www/ast_tickets/tickets/static/'
-# PAGE_FILENAME = 'page/tickets.html'
-# PAGE_PATH = BASE_DIR + PAGE_FILENAME
-
-
 def logout_view(request):
     logout(request)
     return redirect('/login/')
@@ -31,8 +25,6 @@ def logout_view(request):
 def home(request):
     filter_data = {'types': Type.objects.all(), 'teams': Team.objects.all(), 'reasons': Reason.objects.all()}
     filter = request.session.get('filter')
-    #date = datetime.strptime(filter['date_assigned'], "%Y-%m-%d")
-    #filter['date_assigned'] = date.strftime("%d.%m.%Y")
     return {'filter_data': filter_data, 'filter': filter}
 
 
@@ -135,67 +127,37 @@ def create_report(request, id):
 
 
 def ajax_apply_filter(request):
+    #assert False, request.session['filter']
     numeric_filters = ['status', 'team', 'type']
     if request.is_ajax() and request.method == 'POST':
         POST = request.POST
-        if 'name' in POST and 'value' in POST:
-            name = POST.get('name')
-            value = POST.get('value')
-            if name in numeric_filters and value != '':
-                value = int(value)
-            request.session['filter'] = request.session.get('filter', {})
-            if name == 'date_range' and value:
-                value = json.loads(value)
-                request.session['filter'][name] = {}
-                request.session['filter'][name]['from'] = value['from']
-                request.session['filter'][name]['to'] = value['to']
+        if 'filter' in POST:
+            filter = json.loads(POST.get('filter'))
+            name = filter.keys()[0]
+            value = filter[name]
+            if name == 'clear':
+                request.session['filter'] = {}
             else:
-                request.session['filter'][name] = value
+                if name in numeric_filters and value != '':
+                    value = int(value)
+                request.session['filter'] = request.session.get('filter', {})
+                if value:
+                    if name == 'date_range':
+                            value = json.loads(value)
+                            request.session['filter'][name] = {}
+                            request.session['filter'][name]['from'] = value['from']
+                            request.session['filter'][name]['to'] = value['to']
+                    else:
+                        request.session['filter'][name] = value
+                else:
+                    if name in request.session['filter']:
+                        request.session['filter'].pop(name)
     return HttpResponse()
-
-
-# def ajax_create_pdf(request):
-#     def generateHtml():
-#         html = '<!DOCTYPE html><link rel="stylesheet" href="/static/css/style.css" /><meta charset="utf-8">'
-#         today = datetime.now()
-#         tickets = Ticket.objects.filter(status=1, date_assigned__year=today.year, date_assigned__month=today.month, date_assigned__day=today.day).order_by('date_assigned')
-#         for ticket in tickets:
-#             html += u'''
-#                     Тип заявки: %s<br>
-#                     Бригада: %s<br>
-#                     Срочность: %s<br>
-#                     № Договора: %s<br>
-#                     Тип абонента: %s<br>
-#                     Адрес: %s<br>
-#                     Телефон: %s<br>
-#                     Тех. данные: %s<br>
-#                     Описание: %s<br>
-#                     Дата/Время: %s<br><hr><br>
-#                     ''' % (ticket.type.name, ticket.team.name, ticket.urgence.name, ticket.account,
-#                             ticket.subscriber_type.name, ticket.address, ticket.phone, ticket.technical_data, ticket.description, ticket.date_assigned)
-#         file = open(PAGE_PATH, 'w')
-#         file.write(html.encode('UTF-8'))
-#         file.close()
-
-#     # def generatePdf():
-#     #     pdf_path = BASE_DIR + 'page/tickets.pdf'
-#     #     os.system('htmldoc --webpage -f %s %s' % (pdf_path, PAGE_PATH))
-#     if request.is_ajax():
-#         generateHtml()
-#         # generatePdf()
-#     return HttpResponse()
-
 
 @render_to('edit_ticket.html')
 @login_required
 def edit_ticket(request, id):
     def saveEditTicketForm(POST, FILES, ticket):
-        # def handleUploadedFile(f):
-        #     destination = open(MEDIA_ROOT + 'some/file/name.txt', 'wb+')
-        #     for chunk in f.chunks():
-        #         destination.write(chunk)
-        #     destination.close()
-        # handleUploadedFile(FILES['file'])
         POST = copy.copy(POST)
         POST['user_modified'] = request.user.pk
 
