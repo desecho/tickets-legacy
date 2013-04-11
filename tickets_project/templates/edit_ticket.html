@@ -24,9 +24,9 @@
         {{ form.as_table }}
     </table>
     <p>
-        <input type="button" value="{{ submit_name }}" onclick="submitTicket()">
+        <input class="btn" type="button" value="{{ submit_name }}" onclick="submitTicket()">
         {% if perms.tickets.can_change_ticket_status and ticket.status %}
-            <input type="button" value="Закрыть заявку" onclick="closeTicket()">
+            <input class="btn" type="button" value="Закрыть заявку" onclick="closeTicket()">
         {% endif %}
     </p>
 </form>

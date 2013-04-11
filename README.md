@@ -27,6 +27,7 @@ The interface is in Russian.
 * [jQuery DataTables v1.9.4](http://www.datatables.net/)
 * [FullCalendar v1.5.3](http://arshaw.com/fullcalendar/)
 * [qTip2 v2.0.1](http://craigsworks.com/projects/qtip2/)
+* [Bootstrap v2.3.1](http://twitter.github.com/bootstrap/)
 
 ##Installation instructions
 

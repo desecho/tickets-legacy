@@ -48,7 +48,7 @@
     <input class="filter" id="date" type="text" name="date_assigned" {% if filter.date_assigned %}value="{{ filter.date_assigned }}"{% endif %}>
 </div>
 <div class="filter_element">
-    Период - <label for="date_from">от:</label>
+    Период: <label for="date_from">от:</label>
     <input class="filter" id="date_from" type="text" name="date_from" {% if filter.date_range %}value="{{ filter.date_range.from }}"{% endif %}>
     <label for="date_to">до:</label>
     <input class="filter" id="date_to" type="text" name="date_to" {% if filter.date_range %}value="{{ filter.date_range.to }}"{% endif %}>
@@ -67,7 +67,7 @@
     <input class="filter" id="address" type="text" name="address" {% if filter.address %}value="{{ filter.address }}"{% endif %}>
 </div>
 <div class="filter_element">
-    <input type="button" onclick="resetFilters()" value="Сбросить" />
+    <input type="button" class="btn reset-button" onclick="resetFilters()" value="Сбросить" />
 </div>
 <div id="results" class="results"></div>
 
