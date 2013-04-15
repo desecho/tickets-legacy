@@ -44,14 +44,16 @@
     </select>
 </div>
 <div class="filter_element">
-    <label for="date_assigned">Дата:</label>
-    <input class="filter" id="date" type="text" name="date_assigned" {% if filter.date_assigned %}value="{{ filter.date_assigned }}"{% endif %}>
+    <label for="date_from">Дата от:</label>
+    <input class="filter" id="date_from" type="text" name="date_from" {% if filter.date_range %}value="{{ filter.date_range.from }}"{% endif %}>
 </div>
 <div class="filter_element">
-    Период: <label for="date_from">от:</label>
-    <input class="filter" id="date_from" type="text" name="date_from" {% if filter.date_range %}value="{{ filter.date_range.from }}"{% endif %}>
-    <label for="date_to">до:</label>
+    <label for="date_to">Дата до:</label>
     <input class="filter" id="date_to" type="text" name="date_to" {% if filter.date_range %}value="{{ filter.date_range.to }}"{% endif %}>
+</div>
+<div class="filter_element">
+    <label for="date_assigned">Дата:</label>
+    <input class="filter" id="date" type="text" name="date_assigned" {% if filter.date_assigned %}value="{{ filter.date_assigned }}"{% endif %}>
 </div>
 <div class="filter_element">
     <label for="reason">Причина:</label>
