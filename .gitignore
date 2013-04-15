@@ -1,4 +1,5 @@
 *.py[cod]
+*DS_Store
 tickets_project/static/admin/
 tickets_project/tickets_project/secret.py
 tickets_project/static/img/logo.gif
