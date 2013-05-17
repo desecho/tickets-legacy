@@ -125,3 +125,7 @@ label.error {
 .reset-button {
     margin-top: 25px;
 }
+
+#results_table_length {
+    margin-top: 10px;
+}
