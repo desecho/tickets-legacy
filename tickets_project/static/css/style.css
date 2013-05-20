@@ -129,3 +129,17 @@ label.error {
 #results_table_length {
     margin-top: 10px;
 }
+
+/* Fix datatables css */
+table.dataTable tr.odd { background-color: transparent; }
+table.dataTable tr.even { background-color: transparent; }
+table.dataTable tr.odd td.sorting_1 { background-color: transparent; }
+table.dataTable tr.odd td.sorting_2 { background-color: transparent; }
+table.dataTable tr.odd td.sorting_3 { background-color: transparent; }
+table.dataTable tr.even td.sorting_1 { background-color: transparent; }
+table.dataTable tr.even td.sorting_2 { background-color: transparent; }
+table.dataTable tr.even td.sorting_3 { background-color: transparent; }
+
+.closed {
+    background-color: grey !important;
+}
