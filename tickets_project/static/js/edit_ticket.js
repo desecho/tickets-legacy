@@ -58,7 +58,11 @@ $(function() {
 function openMap() {
     function removeAppartment(address) {
         x = address.indexOf(', кв.');
-        return address.substring(0, x);
+        if (x != -1) {
+            return address.substring(0, x);
+        } else {
+            return address;
+        }
     }
     address = $('#id_address').val();
     address = removeAppartment(address);

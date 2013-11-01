@@ -25,6 +25,10 @@ def logout_view(request):
 def home(request):
     filter_data = {'types': Type.objects.all(), 'teams': Team.objects.all(), 'reasons': Reason.objects.all()}
     filter = request.session.get('filter')
+    # Filter open tickets by default
+    if filter is None:
+        filter = request.session['filter'] = {'status': 1}
+        filter = request.session.get('filter')
     return {'filter_data': filter_data, 'filter': filter}
 
 
@@ -141,12 +145,13 @@ def ajax_apply_filter(request):
                 if name in numeric_filters and value != '':
                     value = int(value)
                 request.session['filter'] = request.session.get('filter', {})
-                if value:
+                if value != '':
                     if name == 'date_range':
                             value = json.loads(value)
-                            request.session['filter'][name] = {}
-                            request.session['filter'][name]['from'] = value['from']
-                            request.session['filter'][name]['to'] = value['to']
+                            request.session['filter'][name] = {
+                                'from': value['from'],
+                                'to': value['to'],
+                            }
                     else:
                         request.session['filter'][name] = value
                 else:
@@ -193,6 +198,7 @@ def edit_ticket(request, id):
             'name': ticket.name,
             'address': ticket.address,
             'phone': ticket.phone,
+            'price': ticket.price,
             'technical_data': ticket.technical_data,
             'date_assigned': ticket.date_assigned,
             'description': ticket.description,
@@ -239,12 +245,6 @@ def ajax_get_ticket_list(request):
     def convertToDatetime(date):
         return datetime.strptime(date, "%d.%m.%Y")
 
-    def status_name(status):
-        if status:
-            return 'Открыта'
-        else:
-            return 'Закрыта'
-
     def status_class_name(status, urgence_id):
         if status:
             if urgence_id == 1:
@@ -255,7 +255,7 @@ def ajax_get_ticket_list(request):
             return 'closed'
 
     if request.is_ajax() and request.method == 'GET':
-        filter = request.session.get('filter', {})
+        filter = request.session.get('filter')
         filter = processEmptyFilters(filter)
         if 'date_range' in filter:
             date_from = convertToDatetime(filter['date_range']['from'])
@@ -276,23 +276,22 @@ def ajax_get_ticket_list(request):
             filter.pop('address')
         tickets = Ticket.objects.filter(**filter).select_related().values(
             'id', 'status', 'type__name', 'team__name', 'urgence__name',
-            'subscriber_type__name', 'account', 'address', 'time', 'date_assigned',
+            'subscriber_type__name', 'account', 'name', 'address', 'time', 'date_assigned',
             'urgence_id')
         tickets = tickets[:settings.TICKET_LISTING_LIMIT]
         tickets_output = []
         for ticket in tickets:
             t = {
                 '0': ticket['id'],
-                '1': status_name(ticket['status']),
-                '2': ticket['type__name'],
-                '3': ticket['team__name'],
-                '4': ticket['urgence__name'],
-                '5': ticket['subscriber_type__name'],
-                '6': ticket['account'],
-                '7': ticket['address'],
-                '8': ticket['time'].strftime("%H:%M"),
-                '9': ticket['date_assigned'].strftime("%d.%m.%y %H:%M"),
-                '10': '<a href="/edit-ticket/%d">Изменить</a>' % ticket['id'],
+                '1': ticket['type__name'],
+                '2': ticket['team__name'],
+                '3': ticket['subscriber_type__name'],
+                '4': ticket['account'],
+                '5': ticket['name'],
+                '6': ticket['address'],
+                '7': ticket['time'].strftime("%H:%M"),
+                '8': ticket['date_assigned'].strftime("%d.%m.%y %H:%M"),
+                '9': '<a href="/edit-ticket/%d">Изменить</a>' % ticket['id'],
                 'DT_RowClass': status_class_name(ticket['status'], ticket['urgence_id']),
             }
             tickets_output.append(t)

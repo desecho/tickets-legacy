@@ -143,3 +143,8 @@ table.dataTable tr.even td.sorting_3 { background-color: transparent; }
 .closed {
     background-color: grey !important;
 }
+
+/* override bootstrap */
+label {
+    display: inline;
+}

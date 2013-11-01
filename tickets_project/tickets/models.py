@@ -91,6 +91,7 @@ class Ticket(models.Model):
     account = models.IntegerField('№ Договора', null=True, blank=True)
     name = models.CharField('ФИО', max_length=255)
     subscriber_type = models.ForeignKey(SubscriberType, verbose_name='тип абонента')
+    price = models.CharField('стоимость подключения', null=True, blank=True, max_length=255)
     address = models.CharField('адрес', max_length=255)
     phone = models.CharField('телефон', max_length=255, null=True, blank=True)
     technical_data = models.CharField('тех. данные', max_length=255, null=True, blank=True)

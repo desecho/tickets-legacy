@@ -4,14 +4,15 @@ function get_ticket_list() {
       $('#results').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="results_table"></table>');
       $('#results_table').dataTable( {
         "aaData": data.data,
+        "aaSorting": [[0,'desc']],
+        "iDisplayLength": 100,
         "aoColumns": [
           { "sTitle": "Id" },
-          { "sTitle": "Статус" },
           { "sTitle": "Тип<br>заявки" },
           { "sTitle": "Бригада" },
-          { "sTitle": "Срочность" },
           { "sTitle": "Тип<br>абонента" },
           { "sTitle": "№ Договора" },
+          { "sTitle": "ФИО" },
           { "sTitle": "Адрес" },
           { "sTitle": "Длительность" },
           { "sTitle": "Дата/Время" },
