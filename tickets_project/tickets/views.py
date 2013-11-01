@@ -246,11 +246,13 @@ def ajax_get_ticket_list(request):
         return datetime.strptime(date, "%d.%m.%Y")
 
     def status_class_name(status, urgence_id):
-        if status:
+        if status == 1:
             if urgence_id == 1:
                 return 'priority-low'
             if urgence_id == 3:
                 return 'priority-high'
+        elif status == 2:
+            return 'cancelled'
         else:
             return 'closed'
 

@@ -144,6 +144,11 @@ table.dataTable tr.even td.sorting_3 { background-color: transparent; }
     background-color: grey !important;
 }
 
+.cancelled {
+    background-color: brown !important;
+}
+
+
 /* override bootstrap */
 label {
     display: inline;
