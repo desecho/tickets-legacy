@@ -130,6 +130,13 @@ def create_report(request, id):
     return {'tickets': tickets}
 
 
+@render_to('report.html')
+@login_required
+def create_individual_report(request, id):
+    tickets = Ticket.objects.filter(pk=id)
+    return {'tickets': tickets}
+
+
 def ajax_apply_filter(request):
     #assert False, request.session['filter']
     numeric_filters = ['status', 'team', 'type']
@@ -293,7 +300,7 @@ def ajax_get_ticket_list(request):
                 '6': ticket['address'],
                 '7': ticket['time'].strftime("%H:%M"),
                 '8': ticket['date_assigned'].strftime("%d.%m.%y %H:%M"),
-                '9': '<a href="/edit-ticket/%d">Изменить</a>' % ticket['id'],
+                '9': '<a href="/edit-ticket/%d">Изменить</a> | <br><a href="/create-individual-report/%d">Сформировать наряд</a>' % (ticket['id'], ticket['id']),
                 'DT_RowClass': status_class_name(ticket['status'], ticket['urgence_id']),
             }
             tickets_output.append(t)
