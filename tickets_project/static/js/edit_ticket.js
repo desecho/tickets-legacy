@@ -39,7 +39,7 @@ function closeTicket() {
     $('#id_solution').addClass("required");
     $('#id_reason').addClass("required");
     if ($("#ticket").valid()) {
-        $('#id_status').val("False");
+        $('#id_status').val(0);
         $('#ticket').submit();
     }
 }
