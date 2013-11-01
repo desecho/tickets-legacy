@@ -84,7 +84,7 @@ class Urgence(models.Model):
         verbose_name_plural = 'срочности'
 
 class Ticket(models.Model):
-    status = models.BooleanField('статус', default=True)
+    status = models.PositiveSmallIntegerField('статус', default=1)
     type = models.ForeignKey(Type, verbose_name='тип заявки')
     team = models.ForeignKey(Team, verbose_name='бригада')
     urgence = models.ForeignKey(Urgence, verbose_name='срочность', default=2)

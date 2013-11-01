@@ -44,6 +44,15 @@ function closeTicket() {
     }
 }
 
+function cancelTicket() {
+    $('#id_solution').addClass("required");
+    $('#id_reason').addClass("required");
+    if ($("#ticket").valid()) {
+        $('#id_status').val(2);
+        $('#ticket').submit();
+    }
+}
+
 $(function() {
     minutes_settings = {
         stepMinute: 30,
