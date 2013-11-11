@@ -106,9 +106,12 @@
     <td>подпись</td>
 </tr>
 </table>
-<div class="page-break"></div>
-{% if ticket.image %} <div class="ticket-image"><img src="/media/{{ ticket.image }}"></div>{% endif %}
+{% if not forloop.last %}
+    <div class="page-break"></div>
+{% endif %}
+{% if ticket.image %} <div class="ticket-image"><img src="/media/{{ ticket.image }}"></div>
+    <div class="page-break"></div>
+{% endif %}
 </div>
-<div class="page-break"></div>
 {% endfor %}
 {% endblock %}
