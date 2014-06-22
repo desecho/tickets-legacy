@@ -157,3 +157,7 @@ label {
 .form-horizontal .control-group {
     margin-bottom: 10px;
 }
+
+#results_table td:last-child {
+    background-color: white;
+}
