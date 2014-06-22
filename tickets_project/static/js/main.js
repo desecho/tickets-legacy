@@ -37,8 +37,14 @@ jQuery(document).ajaxSend(function(event, xhr, settings) {
     }
 });
 
-$.jGrowl.defaults.closerTemplate = '<div>Закрыть все уведомления</div>';
-
-function displayMessage(message) {
-    $.jGrowl(message);
+function displayMessage(message, error) {
+    error = typeof error !== 'undefined' ? error : false;
+    var type = 'info';
+    if (error) {
+        type = 'error';
+    }
+    Messenger().post({
+        message: message,
+        type: type
+    });
 }

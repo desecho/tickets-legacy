@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block content %}
-
-<script src="/static/libs/jquery-validation-plugin/jquery.validate.min.js"></script>
-<script src="/static/libs/jquery-validation-plugin/validate.messages_ru.js"></script>
+{% block head %}
+<script src="/static/bower/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/static/bower/jquery-validation/src/localization/messages_ru.js"></script>
 
 <script src="/static/js/settings.js"></script>
 <script src="/static/js/edit_ticket.js"></script>
- <a href="/">Назад</a>
+{% endblock %}
+
+{% block content %}
+<a href="/">Назад</a>
 <br><br>
-{% if status %}
-    <script>
-        displayMessage('{{ status }}')
-    </script>
-{% endif %}
+<script>
+    var message = {% if message %}$.parseJSON('{{ message|safe }}'){% else %}false{% endif %};
+</script>
 <form enctype="multipart/form-data" action="" method="POST" id="ticket">
     {% csrf_token %}
     {% if ticket %}
@@ -35,6 +35,4 @@
 {% for record in change_log %}
     {{ record.date }} - {{ record.user }} - {{ record.action }}<br>
 {% endfor %}
-
-
 {% endblock %}

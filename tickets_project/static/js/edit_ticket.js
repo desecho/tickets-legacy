@@ -62,6 +62,9 @@ $(function() {
     $('<a class="additional_action" href="javascript:openMap()">Открыть карту</a>').insertAfter($('#id_address'));
     $('#id_time').timepicker(minutes_settings);
     validateForm();
+    if (message) {
+        displayMessage(message.message, message.error);
+    }
 });
 
 function openMap() {
@@ -79,8 +82,20 @@ function openMap() {
 }
 
 function getSubscriberData() {
-    $.post(subscriber_data_url, {'account': $('#id_account').val()},
+    var account = $('#id_account').val();
+    var type = parseInt($('#id_subscriber_type').val());
+    if (account === '') {
+        displayMessage('Введите номер договора');
+        return;
+    }
+    if (type !== 1 && type !== 2) {
+        displayMessage('Выберите тип абонента');
+        return;
+    }
+    console.log('test');
+    $.post(subscriber_data_url, {account: account, type: type},
         function(data) {
+            console.log('test1');
             data = jQuery.parseJSON(data);
             if (data.status) {
                 $('#id_name').val(data.name);
@@ -92,6 +107,6 @@ function getSubscriberData() {
             }
         }
     ).error(function() {
-        displayMessage('Ошибка получения данных');
+        displayMessage('Ошибка получения данных', true);
     });
 }

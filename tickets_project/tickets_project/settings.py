@@ -1,8 +1,6 @@
-# Django settings for tickets_project project.
-
 import os, django
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -63,12 +61,6 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = '/media/'
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
-STATIC_ROOT = BASE_DIR + '/static/'
-
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
@@ -79,6 +71,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     DJANGO_DIR + '/contrib/admin/static',
+    BASE_DIR + '/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -144,6 +137,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'tickets',
+    #'south',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -186,3 +180,11 @@ TICKET_LISTING_LIMIT = 250
 CALENDAR_DAYS_OFF_DISPLAY_MONTHS_AHEAD = 1
 FORMAT_TIME = '%H:%M'
 FORMAT_DATE = '%d.%m.%Y ' + FORMAT_TIME
+
+try:
+    LOCAL_SETTINGS
+except NameError:
+    try:
+        from local_settings import *
+    except ImportError:
+        pass

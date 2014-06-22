@@ -38,7 +38,7 @@ function get_ticket_list() {
       });
     }
   ).error(function() {
-    displayMessage('Ошибка отображения заявок');
+    displayMessage('Ошибка отображения заявок', true);
   });
 }
 
@@ -50,7 +50,7 @@ function applyFilter(filter, update) {
       }
     }
   ).error(function() {
-    displayMessage('Ошибка применения фильтра.');
+    displayMessage('Ошибка применения фильтра.', true);
   });
 }
 

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
+{% block head %}
+    <link href="/static/bower/DataTables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <script src="/static/bower/DataTables/media/js/jquery.dataTables.js"></script>
+{% endblock %}
+
 {% block content %}
-
-<script src="/static/libs/jquery_datatables/js/jquery.dataTables.min.js"></script>
-
 <script>
     var url_ajax_get_ticket_list = "{% url 'tickets.views.ajax_get_ticket_list' %}";
     var url_ajax_apply_filter = "{% url 'tickets.views.ajax_apply_filter' %}";

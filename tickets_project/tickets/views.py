@@ -179,8 +179,9 @@ def edit_ticket(request, id):
             ChangeLog(ticket=ticket, user=request.user, action='Изменена дата (%s -> %s)' % (old_date, POST['date_assigned'].encode('UTF-8'))).save()
         form = EditTicketSaveForm(POST, FILES, instance=ticket, id=id)
         return saveForm(form)
+
     ticket = Ticket.objects.get(pk=id)
-    status = ''
+    message = None
     if request.method == 'POST':
         form = EditTicketForm(request.POST, request.FILES, id=id)
         if form.is_valid():
@@ -189,9 +190,9 @@ def edit_ticket(request, id):
                     if form.cleaned_data['solution']:
                         return saveEditTicketForm(request.POST, request.FILES, ticket)
                     else:
-                        status = 'Введите решение.'
+                        message = {'message': 'Введите решение.', 'error': False}
                 else:
-                    status = 'У вас нет прав на закрытие заявок.'
+                    message = {'message': 'У вас нет прав на закрытие заявок.', 'error': True}
             else:
                 return saveEditTicketForm(request.POST, request.FILES, ticket)
     else:
@@ -215,7 +216,7 @@ def edit_ticket(request, id):
             'image': ticket.image,
         }
         form = EditTicketForm(initial=form_initial_data)
-    return {'form': form, 'status': status, 'submit_name': 'Сохранить', 'ticket': ticket,
+    return {'form': form, 'message': json.dumps(message), 'submit_name': 'Сохранить', 'ticket': ticket,
             'change_log': ticket.changelog_set.all()}
 
 
