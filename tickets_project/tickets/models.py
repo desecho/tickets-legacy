@@ -31,6 +31,7 @@ class Team(models.Model):
     name = models.CharField('название', max_length=255)
     department = models.ForeignKey(Department, verbose_name='отдел')
     days_off = models.CharField('выходные', max_length=255, blank=True)
+    no_connection = models.BooleanField('не могут подключать')
 
     def __unicode__(self):
         return self.name

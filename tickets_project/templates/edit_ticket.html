@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load bootstrap_toolkit %}
+
 {% block head %}
 <script src="/static/bower/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/static/bower/jquery-validation/src/localization/messages_ru.js"></script>
@@ -13,22 +15,26 @@
 <br><br>
 <script>
     var message = {% if message %}$.parseJSON('{{ message|safe }}'){% else %}false{% endif %};
+    var no_connection_team_ids = $.parseJSON('{{ no_connection_team_ids|safe }}');
 </script>
-<form enctype="multipart/form-data" action="" method="POST" id="ticket">
+
+<form enctype="multipart/form-data" action="" method="POST" id="ticket" class="form-horizontal">
     {% csrf_token %}
     {% if ticket %}
         Добавлена: {{ ticket.user_created }} ({{ ticket.date_created }})<br>
         Изменена: {{ ticket.user_modified }} ({{ ticket.date_modified }})<br>
     {% endif %}
-    <table>
-        {{ form.as_table }}
-    </table>
+    {{ form|as_bootstrap }}
     <p>
-        <input class="btn" type="button" value="{{ submit_name }}" onclick="submitTicket()">
-        {% if perms.tickets.can_change_ticket_status and ticket.status %}
-            <input class="btn" type="button" value="Закрыть заявку" onclick="closeTicket()">
-            <input class="btn" type="button" value="Отменить заявку" onclick="cancelTicket()">
-        {% endif %}
+        <div class="control-group">
+            <div class="controls">
+                <input type="button" value="{{ submit_name }}" class="btn btn-primary" onclick="submitTicket()">
+                {% if perms.tickets.can_change_ticket_status and ticket.status %}
+                    <input class="btn btn-success" type="button" value="Закрыть заявку" onclick="closeTicket()">
+                    <input class="btn btn-danger" type="button" value="Отменить заявку" onclick="cancelTicket()">
+                {% endif %}
+            </div>
+        </div>
     </p>
 </form>
 

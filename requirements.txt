@@ -4,6 +4,7 @@ mysql-python
 python-dateutil
 south
 pillow
+django-bootstrap-toolkit
 
 #django_extensions
 #Werkzeug

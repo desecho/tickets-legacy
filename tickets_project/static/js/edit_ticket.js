@@ -1,53 +1,69 @@
 jQuery.validator.setDefaults({
-    success: "valid"
-});;
+    success: 'valid'
+});
+
+jQuery.validator.addMethod('no_connection', function(value, element) {
+    var team_id = parseInt(value);
+    if (no_connection_team_ids.indexOf(team_id) !== -1) {
+        return parseInt($('#id_type').val()) !== 1;
+    }
+    return true;
+});
 
 function validateForm() {
-    $("#ticket").validate({
+    $('#ticket').validate({
         rules: {
-            type: "required",
-            team: "required",
-            urgence: "required",
-            subscriber_type: "required",
-            address: "required",
-            description: "required",
+            type: 'required',
+            subscriber_type: 'required',
+            urgence: 'required',
+            name: 'required',
+            team: {
+                required: true,
+                no_connection: true,
+            },
+            address: 'required',
+            description: 'required',
             account: {digits: true}
         },
         messages: {
-            type: "Выберите тип заявки.",
-            team: "Выберите бригаду.",
-            urgence: "Выберите срочность.",
-            subscriber_type: "Выберите тип абонента.",
-            address: "Введите адрес.",
-            description: "Введите описание.",
-            reason: "Выберите причину.",
-            account: "Введите только цифры.",
-            solution: "Введите решение.",
+            type: 'Выберите тип заявки.',
+            name: 'Введите ФИО.',
+            subscriber_type: 'Выберите тип абонента.',
+            urgence: 'Выберите срочность.',
+            team: {
+                required: 'Выберите бригаду.',
+                no_connection: 'Эта бригада не доступна для подлючения.'
+            },
+            address: 'Введите адрес.',
+            description: 'Введите описание.',
+            reason: 'Выберите причину.',
+            account: 'Введите только цифры.',
+            solution: 'Введите решение.',
         },
     });
 }
 
 function submitTicket() {
-    $('#id_solution').removeClass("required");
-    $('#id_reason').removeClass("required");
+    $('#id_solution').removeClass('required');
+    $('#id_reason').removeClass('required');
     if ($("#ticket").valid()) {
         $('#ticket').submit();
     }
 }
 
 function closeTicket() {
-    $('#id_solution').addClass("required");
-    $('#id_reason').addClass("required");
-    if ($("#ticket").valid()) {
+    $('#id_solution').addClass('required');
+    $('#id_reason').addClass('required');
+    if ($('#ticket').valid()) {
         $('#id_status').val(0);
         $('#ticket').submit();
     }
 }
 
 function cancelTicket() {
-    $('#id_solution').addClass("required");
-    $('#id_reason').addClass("required");
-    if ($("#ticket").valid()) {
+    $('#id_solution').addClass('required');
+    $('#id_reason').addClass('required');
+    if ($('#ticket').valid()) {
         $('#id_status').val(2);
         $('#ticket').submit();
     }

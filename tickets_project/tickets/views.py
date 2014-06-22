@@ -166,6 +166,11 @@ def ajax_apply_filter(request):
                         request.session['filter'].pop(name)
     return HttpResponse()
 
+
+def get_no_connection_team_ids_json():
+    return json.dumps(list(Team.objects.filter(no_connection=True).values_list('pk', flat=True)))
+
+
 @render_to('edit_ticket.html')
 @login_required
 def edit_ticket(request, id):
@@ -216,8 +221,10 @@ def edit_ticket(request, id):
             'image': ticket.image,
         }
         form = EditTicketForm(initial=form_initial_data)
-    return {'form': form, 'message': json.dumps(message), 'submit_name': 'Сохранить', 'ticket': ticket,
-            'change_log': ticket.changelog_set.all()}
+    return {'form': form, 'message': json.dumps(message),
+        'submit_name': 'Сохранить', 'ticket': ticket,
+        'change_log': ticket.changelog_set.all(),
+        'no_connection_team_ids': get_no_connection_team_ids_json()}
 
 
 def saveForm(form):
@@ -238,7 +245,8 @@ def add_ticket(request):
             return saveForm(form)
     else:
         form = AddTicketForm()
-    return {'form': form, 'submit_name': 'Добавить'}
+    return {'form': form, 'submit_name': 'Добавить',
+        'no_connection_team_ids': get_no_connection_team_ids_json()}
 
 
 @ajax_request

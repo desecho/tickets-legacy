@@ -34,7 +34,7 @@ h1 {
 }
 
 label.error {
-    color: red;
+    color: #b94a48;
 }
 
 .results {
@@ -152,4 +152,8 @@ table.dataTable tr.even td.sorting_3 { background-color: transparent; }
 /* override bootstrap */
 label {
     display: inline;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 10px;
 }

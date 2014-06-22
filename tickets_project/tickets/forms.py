@@ -1,8 +1,10 @@
 # -*- coding: utf8 -*-
-from django import forms
-from django.forms import ModelForm, Textarea, DateTimeInput, DateTimeField, HiddenInput, TimeField, TimeInput
+
+from django.forms import (ModelForm, Textarea, DateTimeInput, DateTimeField,
+    HiddenInput, TimeField, TimeInput, ValidationError)
 from django.conf import settings
-from days_time import getTeamDaysOff, checkIfDayOfWeekInDayOfWeekList, get_dinner_time
+from days_time import (getTeamDaysOff, checkIfDayOfWeekInDayOfWeekList,
+    get_dinner_time)
 from tickets.models import Ticket
 from datetime import timedelta, date, time, datetime
 
@@ -18,6 +20,13 @@ class TicketForm(ModelForm):
         else:
             self.id = 0
         super(TicketForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super(TicketForm, self).clean()
+
+        if cleaned_data['team'].no_connection and cleaned_data['type'].pk == 1:
+            raise ValidationError('Выбранная бригада не доступна для подлючения.')
+        return cleaned_data
 
     def clean_date_assigned(self):
         def getTime(time):
@@ -65,7 +74,7 @@ class TicketForm(ModelForm):
                 error = 'В этот день у бригады выходной.'
             elif status == 2:
                 error = 'В это время у бригады обед.'
-            raise forms.ValidationError(error)
+            raise ValidationError(error)
         return selected_date
 
     class Meta:
