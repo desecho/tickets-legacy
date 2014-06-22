@@ -1,0 +1,18 @@
+{
+  "name": "movies",
+  "version": "0.1.1",
+  "dependencies": {
+    "jquery": "Used for bootstrap2",
+    "jquery": "2.0.3",
+    "jquery-ui": "latest",
+    "jquery-ui-bootstrap": "latest",
+    "jQuery-Timepicker-Addon": "latest",
+    "bootstrap": "~2",
+    "fullcalendar": "latest",
+    "qtip2": "latest",
+    "messenger": "latest",
+    "DataTables": "latest",
+    "jquery-validation": "latest"
+  },
+  "private": true
+}

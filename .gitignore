@@ -1,7 +1,9 @@
 *.py[cod]
 *DS_Store
 tickets_project/static/admin/
+tickets_project/static/bower/
 tickets_project/tickets_project/secret.py
+tickets_project/tickets_project/local_settings.py
 tickets_project/static/img/logo.gif
 
 # C extensions

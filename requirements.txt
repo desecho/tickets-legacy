@@ -1,0 +1,10 @@
+Django==1.5.8
+django-annoying
+mysql-python
+python-dateutil
+south
+pillow
+
+#django_extensions
+#Werkzeug
+#django-debug_toolbar
