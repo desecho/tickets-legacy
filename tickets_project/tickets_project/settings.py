@@ -1,4 +1,5 @@
-import os, django
+import os
+import django
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG

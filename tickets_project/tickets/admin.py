@@ -1,5 +1,6 @@
-from tickets.models import UserProfile, Department, Team, SubscriberType, Type, Urgence, Ticket, Reason
 from django.contrib import admin
+from .models import (UserProfile, Department, Team, SubscriberType, Type,
+                     Urgence, Ticket, Reason)
 
 admin.site.register(UserProfile)
 admin.site.register(Department)

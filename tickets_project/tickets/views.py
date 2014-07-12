@@ -1,19 +1,24 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
-from tickets.models import Ticket, Type, Team, Reason, ChangeLog
-from tickets.forms import AddTicketSaveForm, AddTicketForm, EditTicketForm, EditTicketSaveForm
-from annoying.decorators import ajax_request, render_to
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.template import RequestContext
-from datetime import datetime, timedelta, date
-from dateutil.relativedelta import relativedelta
-from django.core.urlresolvers import reverse
 import json
 import copy
+
+from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
+
+from annoying.decorators import ajax_request, render_to
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.conf import settings
-from days_time import getTeamDaysOff, checkIfDayOfWeekInDayOfWeekList, get_dinner_time
+
+from .days_time import (getTeamDaysOff, checkIfDayOfWeekInDayOfWeekList,
+                        get_dinner_time)
+from .models import Ticket, Type, Team, Reason, ChangeLog
+from .forms import (AddTicketSaveForm, AddTicketForm, EditTicketForm,
+                    EditTicketSaveForm)
+
 
 def logout_view(request):
     logout(request)
@@ -23,7 +28,8 @@ def logout_view(request):
 @render_to('index.html')
 @login_required
 def home(request):
-    filter_data = {'types': Type.objects.all(), 'teams': Team.objects.all(), 'reasons': Reason.objects.all()}
+    filter_data = {'types': Type.objects.all(), 'teams': Team.objects.all(),
+                   'reasons': Reason.objects.all()}
     filter = request.session.get('filter')
     # Filter open tickets by default
     if filter is None:
@@ -39,25 +45,32 @@ def calendar(request):
         text = text.replace("'", '')
         text = ''.join(text.splitlines())
         return text
+
     def getYearMonthDay(date):
         output = {'year': date.year,
-                  'month': date.month - 1,  # -1 because months are zero based in js
+                  # -1 because months start from 0 in js
+                  'month': date.month - 1,
                   'day': date.day}
         return output
+
     def getDateRange():
         def daterange(start_date, end_date):
-            for n in range(int ((end_date - start_date).days)):
+            for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
         start_date = date.today()
-        end_date = start_date + relativedelta(months=settings.CALENDAR_DAYS_OFF_DISPLAY_MONTHS_AHEAD)
+        end_date = start_date + relativedelta(
+            months=settings.CALENDAR_DAYS_OFF_DISPLAY_MONTHS_AHEAD)
         return daterange(start_date, end_date)
+
     def getTeamsWithoutDinnerAndDaysOff():
         teams = Team.objects.all()
         for team_id in settings.TEAMS_NO_DINNER_NO_DAYS_OFF:
             teams = teams.exclude(department=team_id)
         return teams
+
     def joinDicts(x, y):
         return dict(x.items() + y.items())
+
     def getDinner():
         teams = getTeamsWithoutDinnerAndDaysOff()
         dates = []
@@ -78,6 +91,7 @@ def calendar(request):
                     dinner = joinDicts(dinner, getYearMonthDay(date))
                     dates.append(dinner)
         return dates
+
     def getDaysOff():
         teams = getTeamsWithoutDinnerAndDaysOff()
         dates = []
@@ -91,19 +105,24 @@ def calendar(request):
                     day_off = joinDicts(day_off, getYearMonthDay(date))
                     dates.append(day_off)
         return dates
+
     def getTickets():
         tickets = Ticket.objects.filter(status=1).select_related()
         tickets_output = []
         for ticket in tickets:
             date_start = ticket.date_assigned
-            date_end = ticket.date_assigned + timedelta(minutes=ticket.time.minute, hours=ticket.time.hour)
-            title = ticket.type.name + ' ' + ticket.team.name + ' ' + ticket.subscriber_type.name + ' ' +  ticket.address
+            date_end = ticket.date_assigned + timedelta(
+                minutes=ticket.time.minute, hours=ticket.time.hour)
+            title = '%s %s %s %s' % (
+                ticket.type.name, ticket.team.name, ticket.subscriber_type.name,
+                ticket.address)
             title = processText(title)
             description = processText(ticket.description)
             t = {
                 'title': title,
                 'year': date_start.year,
-                'month': date_start.month - 1,  # -1 because months are zero based in js
+                # -1 because months start from 0 in js
+                'month': date_start.month - 1,
                 'day': date_start.day,
                 'hour_start': date_start.hour,
                 'minute_start': date_start.minute,
@@ -126,7 +145,10 @@ def calendar(request):
 @login_required
 def create_report(request, id):
     today = datetime.now()
-    tickets = Ticket.objects.filter(status=1, date_assigned__year=today.year, date_assigned__month=today.month, date_assigned__day=today.day, team=id).order_by('date_assigned')
+    tickets = Ticket.objects.filter(status=1, date_assigned__year=today.year,
+                                    date_assigned__month=today.month,
+                                    date_assigned__day=today.day, team=id) \
+                            .order_by('date_assigned')
     return {'tickets': tickets}
 
 
@@ -168,7 +190,8 @@ def ajax_apply_filter(request):
 
 
 def get_no_connection_team_ids_json():
-    return json.dumps(list(Team.objects.filter(no_connection=True).values_list('pk', flat=True)))
+    return json.dumps(list(
+        Team.objects.filter(no_connection=True).values_list('pk', flat=True)))
 
 
 @render_to('edit_ticket.html')
@@ -181,7 +204,9 @@ def edit_ticket(request, id):
         # Logging changes if data has been changed
         old_date = ticket.date_assigned.strftime(settings.FORMAT_DATE)
         if POST['date_assigned'] != old_date:
-            ChangeLog(ticket=ticket, user=request.user, action='Изменена дата (%s -> %s)' % (old_date, POST['date_assigned'].encode('UTF-8'))).save()
+            ChangeLog(ticket=ticket, user=request.user,
+                      action='Изменена дата (%s -> %s)' % (old_date,
+                      POST['date_assigned'].encode('UTF-8'))).save()
         form = EditTicketSaveForm(POST, FILES, instance=ticket, id=id)
         return saveForm(form)
 
@@ -193,11 +218,14 @@ def edit_ticket(request, id):
             if not form.cleaned_data['status']:
                 if request.user.has_perm('tickets.can_change_ticket_status'):
                     if form.cleaned_data['solution']:
-                        return saveEditTicketForm(request.POST, request.FILES, ticket)
+                        return saveEditTicketForm(request.POST, request.FILES,
+                                                  ticket)
                     else:
-                        message = {'message': 'Введите решение.', 'error': False}
+                        message = {'message': 'Введите решение.',
+                                   'error': False}
                 else:
-                    message = {'message': 'У вас нет прав на закрытие заявок.', 'error': True}
+                    message = {'message': 'У вас нет прав на закрытие заявок.',
+                               'error': True}
             else:
                 return saveEditTicketForm(request.POST, request.FILES, ticket)
     else:
@@ -222,9 +250,9 @@ def edit_ticket(request, id):
         }
         form = EditTicketForm(initial=form_initial_data)
     return {'form': form, 'message': json.dumps(message),
-        'submit_name': 'Сохранить', 'ticket': ticket,
-        'change_log': ticket.changelog_set.all(),
-        'no_connection_team_ids': get_no_connection_team_ids_json()}
+            'submit_name': 'Сохранить', 'ticket': ticket,
+            'change_log': ticket.changelog_set.all(),
+            'no_connection_team_ids': get_no_connection_team_ids_json()}
 
 
 def saveForm(form):
@@ -246,7 +274,7 @@ def add_ticket(request):
     else:
         form = AddTicketForm()
     return {'form': form, 'submit_name': 'Добавить',
-        'no_connection_team_ids': get_no_connection_team_ids_json()}
+            'no_connection_team_ids': get_no_connection_team_ids_json()}
 
 
 @ajax_request
@@ -284,21 +312,25 @@ def ajax_get_ticket_list(request):
                 filter.pop('date_assigned')
         else:
             if 'date_assigned' in filter:
-                date = convertToDatetime(filter['date_assigned'])
-                filter['date_assigned__year'] = date.strftime("%Y")
-                filter['date_assigned__month'] = date.strftime("%m")
-                filter['date_assigned__day'] = date.strftime("%d")
+                date_assigned = convertToDatetime(filter['date_assigned'])
+                filter['date_assigned__year'] = date_assigned.strftime("%Y")
+                filter['date_assigned__month'] = date_assigned.strftime("%m")
+                filter['date_assigned__day'] = date_assigned.strftime("%d")
                 filter.pop('date_assigned')
         if 'address' in filter:
             filter['address__icontains'] = filter['address']
             filter.pop('address')
         tickets = Ticket.objects.filter(**filter).select_related().values(
             'id', 'status', 'type__name', 'team__name', 'urgence__name',
-            'subscriber_type__name', 'account', 'name', 'address', 'time', 'date_assigned',
-            'urgence_id')
+            'subscriber_type__name', 'account', 'name', 'address', 'time',
+            'date_assigned', 'urgence_id')
         tickets = tickets[:settings.TICKET_LISTING_LIMIT]
         tickets_output = []
         for ticket in tickets:
+            commands = '''<a href="/edit-ticket/%d">Изменить</a><br> |
+                          <a href="/create-individual-report/%d">
+                            Сформировать наряд
+                          </a>''' % (ticket['id'], ticket['id'])
             t = {
                 '0': ticket['id'],
                 '1': ticket['type__name'],
@@ -309,8 +341,9 @@ def ajax_get_ticket_list(request):
                 '6': ticket['address'],
                 '7': ticket['time'].strftime("%H:%M"),
                 '8': ticket['date_assigned'].strftime("%d.%m.%y %H:%M"),
-                '9': '<a href="/edit-ticket/%d">Изменить</a> | <br><a href="/create-individual-report/%d">Сформировать наряд</a>' % (ticket['id'], ticket['id']),
-                'DT_RowClass': status_class_name(ticket['status'], ticket['urgence_id']),
+                '9': commands,
+                'DT_RowClass': status_class_name(ticket['status'],
+                                                 ticket['urgence_id']),
             }
             tickets_output.append(t)
         output = {'data': tickets_output}

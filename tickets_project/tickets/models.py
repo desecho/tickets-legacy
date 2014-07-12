@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from datetime import timedelta
 from django.conf import settings
 
+
 class Department(models.Model):
     name = models.CharField('название', max_length=255)
 
@@ -62,6 +63,7 @@ class Type(models.Model):
         verbose_name = 'тип заявки'
         verbose_name_plural = 'типы заявок'
 
+
 class Reason(models.Model):
     name = models.CharField('название', max_length=255)
 
@@ -84,28 +86,39 @@ class Urgence(models.Model):
         verbose_name = 'срочность'
         verbose_name_plural = 'срочности'
 
+
 class Ticket(models.Model):
     status = models.PositiveSmallIntegerField('статус', default=1)
     type = models.ForeignKey(Type, verbose_name='тип заявки')
     team = models.ForeignKey(Team, verbose_name='бригада')
     urgence = models.ForeignKey(Urgence, verbose_name='срочность', default=2)
-    subscriber_type = models.ForeignKey(SubscriberType, verbose_name='тип абонента')
+    subscriber_type = models.ForeignKey(SubscriberType,
+                                        verbose_name='тип абонента')
     account = models.IntegerField('№ Договора', null=True, blank=True)
     name = models.CharField('ФИО', max_length=255)
-    price = models.CharField('стоимость подключения', null=True, blank=True, max_length=255)
+    price = models.CharField('стоимость подключения', null=True, blank=True,
+                             max_length=255)
     address = models.CharField('адрес', max_length=255)
     phone = models.CharField('телефон', max_length=255, null=True, blank=True)
-    technical_data = models.CharField('тех. данные', max_length=255, null=True, blank=True)
+    technical_data = models.CharField('тех. данные', max_length=255, null=True,
+                                      blank=True)
     description = models.TextField('описание')
-    solution = models.CharField('решение', max_length=255, null=True, blank=True)
-    reason = models.ForeignKey(Reason, null=True, blank=True, verbose_name='причина')
-    user_created = models.ForeignKey(User, related_name='ticket_created', verbose_name='пользователь добавивший')  # related name is used because of the clashing problem
-    user_modified = models.ForeignKey(User, related_name='ticket_modified', verbose_name='пользователь изменивший')
-    time = models.TimeField('длительность заявки', default=timedelta(minutes=60))
+    solution = models.CharField('решение', max_length=255, null=True,
+                                blank=True)
+    reason = models.ForeignKey(Reason, null=True, blank=True,
+                               verbose_name='причина')
+    # related name is used because of the clashing problem
+    user_created = models.ForeignKey(User, related_name='ticket_created',
+                                     verbose_name='пользователь добавивший')
+    user_modified = models.ForeignKey(User, related_name='ticket_modified',
+                                      verbose_name='пользователь изменивший')
+    time = models.TimeField('длительность заявки',
+                            default=timedelta(minutes=60))
     date_assigned = models.DateTimeField('дата/время')
     date_created = models.DateTimeField('дата добавления', auto_now_add=True)
     date_modified = models.DateTimeField('дата изменения', auto_now=True)
-    image = models.ImageField('изображение', upload_to=settings.UPLOAD_DIR, null=True, blank=True)
+    image = models.ImageField('изображение', upload_to=settings.UPLOAD_DIR,
+                              null=True, blank=True)
 
     class Meta:
         permissions = (

@@ -13,11 +13,14 @@
 {% block content %}
 <a href="/">Назад</a>
 <br><br>
+{% if message %}
+    <script>var message = $.parseJSON('{{ message|safe }}');</script>
+{% else %}
+    <script>var message = false;</script>
+{% endif %}
 <script>
-    var message = {% if message %}$.parseJSON('{{ message|safe }}'){% else %}false{% endif %};
     var no_connection_team_ids = $.parseJSON('{{ no_connection_team_ids|safe }}');
 </script>
-
 <form enctype="multipart/form-data" action="" method="POST" id="ticket" class="form-horizontal">
     {% csrf_token %}
     {% if ticket %}
