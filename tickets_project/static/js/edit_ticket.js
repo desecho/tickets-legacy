@@ -10,6 +10,13 @@ jQuery.validator.addMethod('no_connection', function(value, element) {
     return true;
 });
 
+jQuery.validator.addMethod('no_phone', function(value, element) {
+	if (parseInt($('#id_type').val()) == 1) {
+		return value;
+	}
+    return true;
+});
+
 function validateForm() {
     $('#ticket').validate({
         rules: {
@@ -21,6 +28,9 @@ function validateForm() {
                 required: true,
                 no_connection: true,
             },
+            phone: {
+            	digits: true,
+            	no_phone: true},
             address: 'required',
             description: 'required',
             account: {digits: true}
@@ -33,6 +43,10 @@ function validateForm() {
             team: {
                 required: 'Выберите бригаду.',
                 no_connection: 'Эта бригада не доступна для подлючения.'
+            },
+            phone: {
+                digits: 'Введите только цифры.',
+                no_phone: 'Введите номер телефона.'
             },
             address: 'Введите адрес.',
             description: 'Введите описание.',
