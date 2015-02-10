@@ -18,6 +18,7 @@
 </h3>
 
 <p><strong>Описание:</strong> {{ ticket.description }}</p>
+<p><strong>Принявший заявку:</strong> {{ ticket.user_created.get_full_name }}</p>
 
 <table class="table">
     <tr>
