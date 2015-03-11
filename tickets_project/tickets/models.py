@@ -28,14 +28,23 @@ class UserProfile(models.Model):
         verbose_name_plural = 'профили пользователей'
 
 
+class TeamManager(models.Manager):
+    def get_query_set(self):
+        return super(TeamManager, self).get_query_set().filter(deleted=False)
+
+
 class Team(models.Model):
     name = models.CharField('название', max_length=255)
     department = models.ForeignKey(Department, verbose_name='отдел')
     days_off = models.CharField('выходные', max_length=255, blank=True)
     no_connection = models.BooleanField('не могут подключать')
+    deleted = models.BooleanField('удален')
 
     def __unicode__(self):
         return self.name
+
+    objects = TeamManager()
+    all = models.Manager()
 
     class Meta:
         verbose_name = 'бригада'
