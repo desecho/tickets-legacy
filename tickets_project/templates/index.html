@@ -13,22 +13,22 @@
 </script>
 <script src="/static/js/index.js"></script>
 
-<a href="{% url 'tickets.views.add_ticket' %}">Добавить заявку</a> |
-<a href="javascript:createReport()">Сформировать отчет</a> |
-<a href="{% url 'tickets.views.calendar' %}">Календарь</a>
+<a href="{% url 'tickets.views.add_ticket' %}">Add ticket</a> |
+<a href="javascript:createReport()">Create report</a> |
+<a href="{% url 'tickets.views.calendar' %}">Calendar</a>
 <br><br>
 
 <div class="filter_element">
     <label for="status">Статус:</label>
     <select class="filter" name="status" >
         <option value=""></option>
-        <option value="1" {% ifequal filter.status 1 %}selected="selected"{% endifequal %}>Открытые</option>
-        <option value="0" {% ifequal filter.status 0 %}selected="selected"{% endifequal %}>Закрытые</option>
-        <option value="2" {% ifequal filter.status 2 %}selected="selected"{% endifequal %}>Отмененные</option>
+        <option value="1" {% ifequal filter.status 1 %}selected="selected"{% endifequal %}>Opened</option>
+        <option value="0" {% ifequal filter.status 0 %}selected="selected"{% endifequal %}>Closed</option>
+        <option value="2" {% ifequal filter.status 2 %}selected="selected"{% endifequal %}>Canceled</option>
     </select>
 </div>
 <div class="filter_element">
-    <label for="type">Тип заявки:</label>
+    <label for="type">Ticket type:</label>
     <select class="filter" name="type" >
         <option value=""></option>
         {% for type in filter_data.types %}
@@ -37,7 +37,7 @@
     </select>
 </div>
 <div class="filter_element">
-    <label for="team">Бригада:</label>
+    <label for="team">Team:</label>
     <select class="filter" name="team" id="team" >
         <option value=""></option>
         {% for team in filter_data.teams %}
@@ -46,19 +46,19 @@
     </select>
 </div>
 <div class="filter_element">
-    <label for="date_from">Дата от:</label>
+    <label for="date_from">Date from:</label>
     <input class="filter" id="date_from" type="text" name="date_from" {% if filter.date_range %}value="{{ filter.date_range.from }}"{% endif %}>
 </div>
 <div class="filter_element">
-    <label for="date_to">Дата до:</label>
+    <label for="date_to">Date to:</label>
     <input class="filter" id="date_to" type="text" name="date_to" {% if filter.date_range %}value="{{ filter.date_range.to }}"{% endif %}>
 </div>
 <div class="filter_element">
-    <label for="date_assigned">Дата:</label>
+    <label for="date_assigned">Date:</label>
     <input class="filter" id="date" type="text" name="date_assigned" {% if filter.date_assigned %}value="{{ filter.date_assigned }}"{% endif %}>
 </div>
 <div class="filter_element">
-    <label for="reason">Причина:</label>
+    <label for="reason">Cause:</label>
     <select class="filter" name="reason" id="reason" >
         <option value=""></option>
         {% for reason in filter_data.reasons %}
@@ -67,11 +67,11 @@
     </select>
 </div>
 <div class="filter_element">
-    <label for="address">Адрес:</label>
+    <label for="address">Address:</label>
     <input class="filter" id="address" type="text" name="address" {% if filter.address %}value="{{ filter.address }}"{% endif %}>
 </div>
 <div class="filter_element">
-    <input type="button" class="btn reset-button" onclick="resetFilters()" value="Сбросить" />
+    <input type="button" class="btn reset-button" onclick="resetFilters()" value="Reset" />
 </div>
 <div id="results" class="results"></div>
 

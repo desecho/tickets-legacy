@@ -36,23 +36,23 @@ function validateForm() {
             account: {digits: true}
         },
         messages: {
-            type: 'Выберите тип заявки.',
-            name: 'Введите ФИО.',
-            subscriber_type: 'Выберите тип абонента.',
-            urgence: 'Выберите срочность.',
+            type: 'Choose ticket type.',
+            name: 'Enter name.',
+            subscriber_type: 'Select subscriber type.',
+            urgence: 'Select urgence.',
             team: {
-                required: 'Выберите бригаду.',
-                no_connection: 'Эта бригада не доступна для подлючения.'
+                required: 'Select Team.',
+                no_connection: "This team can't make connections."
             },
             phone: {
-                digits: 'Введите только цифры.',
-                no_phone: 'Введите номер телефона.'
+                digits: 'Input only digits.',
+                no_phone: 'Enter phone number.'
             },
-            address: 'Введите адрес.',
-            description: 'Введите описание.',
-            reason: 'Выберите причину.',
-            account: 'Введите только цифры.',
-            solution: 'Введите решение.',
+            address: 'Enter address.',
+            description: 'Enter description.',
+            reason: 'Select cause.',
+            account: 'Input only digits.',
+            solution: 'Enter solution.',
         },
     });
 }
@@ -88,8 +88,6 @@ $(function() {
         stepMinute: 30,
     };
     $('#id_date_assigned').datetimepicker(minutes_settings);
-    $('<a class="additional_action" href="javascript:getSubscriberData()">Загрузить данные</a>').insertAfter($('#id_account'));
-    $('<a class="additional_action" href="javascript:openMap()">Открыть карту</a>').insertAfter($('#id_address'));
     $('#id_time').timepicker(minutes_settings);
     validateForm();
     if (message) {
@@ -115,11 +113,11 @@ function getSubscriberData() {
     var account = $('#id_account').val();
     var type = parseInt($('#id_subscriber_type').val());
     if (account === '') {
-        displayMessage('Введите номер договора');
+        displayMessage('Enter contract number');
         return;
     }
     if (type !== 1 && type !== 2) {
-        displayMessage('Выберите тип абонента');
+        displayMessage('Select subscriber type');
         return;
     }
     console.log('test');

@@ -8,37 +8,20 @@ function get_ticket_list() {
         "iDisplayLength": 100,
         "aoColumns": [
           { "sTitle": "Id" },
-          { "sTitle": "Тип<br>заявки" },
-          { "sTitle": "Бригада" },
-          { "sTitle": "Тип<br>абонента" },
-          { "sTitle": "№ Договора" },
-          { "sTitle": "ФИО" },
-          { "sTitle": "Адрес" },
-          { "sTitle": "Длительность" },
-          { "sTitle": "Дата/Время" },
-          { "sTitle": "Действие" },
+          { "sTitle": "Ticket<br>type" },
+          { "sTitle": "Team" },
+          { "sTitle": "Subscriber<br>type" },
+          { "sTitle": "Contract #" },
+          { "sTitle": "Name" },
+          { "sTitle": "Address" },
+          { "sTitle": "Duration" },
+          { "sTitle": "Date/Time" },
+          { "sTitle": "Action" },
         ],
-        "oLanguage": {
-          "sProcessing":   "Подождите...",
-          "sLengthMenu":   "Показать _MENU_ записей",
-          "sZeroRecords":  "Записи отсутствуют.",
-          "sInfo":         "Записи с _START_ до _END_ из _TOTAL_ записей",
-          "sInfoEmpty":    "Записи с 0 до 0 из 0 записей",
-          "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
-          "sInfoPostFix":  "",
-          "sSearch":       "Поиск:",
-          "sUrl":          "",
-          "oPaginate": {
-            "sFirst":      "Первая",
-            "sPrevious":   "Предыдущая",
-            "sNext":       "Следующая",
-            "sLast":       "Последняя"
-          }
-        }
       });
     }
   ).error(function() {
-    displayMessage('Ошибка отображения заявок', true);
+    displayMessage('Error displaying tickets', true);
   });
 }
 
@@ -50,7 +33,7 @@ function applyFilter(filter, update) {
       }
     }
   ).error(function() {
-    displayMessage('Ошибка применения фильтра.', true);
+    displayMessage('Error applying filter.', true);
   });
 }
 
@@ -100,7 +83,7 @@ function createReport() {
   if (team_id) {
     window.open(url_create_report + team_id);
   } else {
-    displayMessage('Выберите бригаду');
+    displayMessage('Choose a team');
   }
 }
 

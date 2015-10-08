@@ -16,12 +16,10 @@
 
     <script src="/static/bower/jquery/jquery.min.js"></script>
     <script src="/static/bower/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <script src="/static/bower/jquery-ui/ui/i18n/jquery.ui.datepicker-ru.js"></script>
 
     <script src="/static/bower/bootstrap/docs/assets/js/bootstrap.min.js"></script>
 
     <script src="/static/bower/jQuery-Timepicker-Addon/dist/jquery-ui-timepicker-addon.min.js"></script>
-    <script src="/static/bower/jQuery-Timepicker-Addon/dist/i18n/jquery-ui-timepicker-ru.js"></script>
 
     <script src="/static/bower/messenger/build/js/messenger.min.js"></script>
     <script src="/static/bower/messenger/build/js/messenger-theme-future.js"></script>
@@ -29,11 +27,11 @@
     {% block head %}{% endblock %}
 
     <meta charset="utf-8">
-    <title>{% block title %}Заявки{% endblock %}</title>
+    <title>{% block title %}Tickets{% endblock %}</title>
 </head>
 <body>
     <div class="login_panel">
-        <a href="/logout/">Выход</a><br>
+        <a href="/logout/">Logout</a><br>
         {% block additional_actions %}
 	    {% endblock %}
     </div>

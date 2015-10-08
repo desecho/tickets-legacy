@@ -4,14 +4,13 @@
 
 {% block head %}
 <script src="/static/bower/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="/static/bower/jquery-validation/src/localization/messages_ru.js"></script>
 
 <script src="/static/js/settings.js"></script>
 <script src="/static/js/edit_ticket.js"></script>
 {% endblock %}
 
 {% block content %}
-<a href="/">Назад</a>
+<a href="/">Back</a>
 <br><br>
 {% if message %}
     <script>var message = $.parseJSON('{{ message|safe }}');</script>
@@ -24,8 +23,8 @@
 <form enctype="multipart/form-data" action="" method="POST" id="ticket" class="form-horizontal">
     {% csrf_token %}
     {% if ticket %}
-        Добавлена: {{ ticket.user_created }} ({{ ticket.date_created }})<br>
-        Изменена: {{ ticket.user_modified }} ({{ ticket.date_modified }})<br>
+        Added: {{ ticket.user_created }} ({{ ticket.date_created }})<br>
+        Modified: {{ ticket.user_modified }} ({{ ticket.date_modified }})<br>
     {% endif %}
     {{ form|as_bootstrap }}
     <p>
@@ -33,8 +32,8 @@
             <div class="controls">
                 <input type="button" value="{{ submit_name }}" class="btn btn-primary" onclick="submitTicket()">
                 {% if perms.tickets.can_change_ticket_status and ticket.status %}
-                    <input class="btn btn-success" type="button" value="Закрыть заявку" onclick="closeTicket()">
-                    <input class="btn btn-danger" type="button" value="Отменить заявку" onclick="cancelTicket()">
+                    <input class="btn btn-success" type="button" value="Close ticket" onclick="closeTicket()">
+                    <input class="btn btn-danger" type="button" value="Cancel ticket" onclick="cancelTicket()">
                 {% endif %}
             </div>
         </div>

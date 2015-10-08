@@ -205,7 +205,7 @@ def edit_ticket(request, id):
         old_date = ticket.date_assigned.strftime(settings.FORMAT_DATE)
         if POST['date_assigned'] != old_date:
             ChangeLog(ticket=ticket, user=request.user,
-                      action='Изменена дата (%s -> %s)' % (old_date,
+                      action='Date changed (%s -> %s)' % (old_date,
                       POST['date_assigned'].encode('UTF-8'))).save()
         form = EditTicketSaveForm(POST, FILES, instance=ticket, id=id)
         return saveForm(form)
@@ -221,10 +221,10 @@ def edit_ticket(request, id):
                         return saveEditTicketForm(request.POST, request.FILES,
                                                   ticket)
                     else:
-                        message = {'message': 'Введите решение.',
+                        message = {'message': 'Input Solution.',
                                    'error': False}
                 else:
-                    message = {'message': 'У вас нет прав на закрытие заявок.',
+                    message = {'message': "You don't have permission to open ticket",
                                'error': True}
             else:
                 return saveEditTicketForm(request.POST, request.FILES, ticket)
@@ -250,7 +250,7 @@ def edit_ticket(request, id):
         }
         form = EditTicketForm(initial=form_initial_data)
     return {'form': form, 'message': json.dumps(message),
-            'submit_name': 'Сохранить', 'ticket': ticket,
+            'submit_name': 'Save', 'ticket': ticket,
             'change_log': ticket.changelog_set.all(),
             'no_connection_team_ids': get_no_connection_team_ids_json()}
 
@@ -273,7 +273,7 @@ def add_ticket(request):
             return saveForm(form)
     else:
         form = AddTicketForm()
-    return {'form': form, 'submit_name': 'Добавить',
+    return {'form': form, 'submit_name': 'Add',
             'no_connection_team_ids': get_no_connection_team_ids_json()}
 
 
@@ -327,9 +327,9 @@ def ajax_get_ticket_list(request):
         tickets = tickets[:settings.TICKET_LISTING_LIMIT]
         tickets_output = []
         for ticket in tickets:
-            commands = '''<a href="/edit-ticket/%d">Изменить</a><br> |
+            commands = '''<a href="/edit-ticket/%d">Edit</a><br> |
                           <a href="/create-individual-report/%d">
-                            Сформировать наряд
+                            Create task
                           </a>''' % (ticket['id'], ticket['id'])
             t = {
                 '0': ticket['id'],
