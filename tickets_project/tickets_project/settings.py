@@ -1,7 +1,9 @@
+from os import getenv
 import os
+from os.path import join
 import django
 
-DEBUG = False
+DEBUG = bool(getenv("DEBUG"))
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -11,20 +13,21 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "tickets",
+        "USER": getenv("DB_USER"),
+        "PASSWORD": getenv("DB_PASSWORD"),
+        "HOST": getenv("DB_HOST"),
+        "OPTIONS": {
+            "charset": "utf8mb4",
+        },
     }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [getenv("PROJECT_DOMAIN")]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -64,7 +67,7 @@ MEDIA_URL = '/media/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = getenv("STATIC_URL", "/static/")
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -72,8 +75,10 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     DJANGO_DIR + '/contrib/admin/static',
-    BASE_DIR + '/static',
+    BASE_DIR + '/tickets/static',
 )
+
+STATIC_ROOT = join(BASE_DIR, "static")
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -83,19 +88,7 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-try:
-    from secret import SECRET_KEY
-except ImportError:
-    def gen_secret_key():
-        here = lambda x: os.path.abspath(os.path.join(os.path.dirname(__file__), x))
-        print "Django's SECRET_KEY not found, generating new."
-        from random import choice
-        secret_key = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-        f = open(here('secret.py'), 'w')
-        f.write('''# Make this unique, and don't share it with anybody.\nSECRET_KEY = '%s'\n''' % secret_key)
-        f.close()
-    gen_secret_key()
-    from secret import SECRET_KEY
+SECRET_KEY = getenv("SECRET_KEY")
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -111,7 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'tickets_project.urls'
@@ -182,11 +175,3 @@ TICKET_LISTING_LIMIT = 250
 CALENDAR_DAYS_OFF_DISPLAY_MONTHS_AHEAD = 1
 FORMAT_TIME = '%H:%M'
 FORMAT_DATE = '%d.%m.%Y ' + FORMAT_TIME
-
-try:
-    LOCAL_SETTINGS
-except NameError:
-    try:
-        from local_settings import *
-    except ImportError:
-        pass

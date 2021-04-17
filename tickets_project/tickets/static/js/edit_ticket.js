@@ -88,7 +88,9 @@ $(function() {
         stepMinute: 30,
     };
     $('#id_date_assigned').datetimepicker(minutes_settings);
-    $('<a class="additional_action" href="javascript:getSubscriberData()">Загрузить данные</a>').insertAfter($('#id_account'));
+    if (api_available) {
+        $('<a class="additional_action" href="javascript:getSubscriberData()">Загрузить данные</a>').insertAfter($('#id_account'));
+    }    
     $('<a class="additional_action" href="javascript:openMap()">Открыть карту</a>').insertAfter($('#id_address'));
     $('#id_time').timepicker(minutes_settings);
     validateForm();

@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block additional_actions %}
 <a href="javascript:window.print()">Печать</a>
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/css/print.css" media="print" />
+<link rel="stylesheet" href="{% static 'css/print.css' %}" media="print" />
 
 {% for ticket in tickets %}
 <div class="report">
-<img src="/static/img/logo.gif" class="logo">
+<img src="{% static 'img/logo.gif' %}" class="logo">
 <div class="clear"></div>
 {% include "report_header.html" %}
 

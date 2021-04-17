@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% load bootstrap_toolkit %}
 
 {% block head %}
-<script src="/static/bower/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="/static/bower/jquery-validation/src/localization/messages_ru.js"></script>
+<script src="{% static 'bower/jquery-validation/dist/jquery.validate.min.js' %}"></script>
+<script src="{% static 'bower/jquery-validation/src/localization/messages_ru.js' %}"></script>
 
-<script src="/static/js/settings.js"></script>
-<script src="/static/js/edit_ticket.js"></script>
+<script src="{% static 'js/settings.js' %}"></script>
+<script src="{% static 'js/edit_ticket.js' %}"></script>
 {% endblock %}
 
 {% block content %}

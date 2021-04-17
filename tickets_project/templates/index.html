@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block head %}
-    <link href="/static/bower/DataTables/media/css/jquery.dataTables.css" rel="stylesheet" />
-    <script src="/static/bower/DataTables/media/js/jquery.dataTables.js"></script>
+    <link href="{% static 'bower/DataTables/media/css/jquery.dataTables.css' %}" rel="stylesheet" />
+    <script src="{% static 'bower/DataTables/media/js/jquery.dataTables.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -11,7 +13,7 @@
     var url_ajax_apply_filter = "{% url 'tickets.views.ajax_apply_filter' %}";
     var url_create_report = "{% url 'tickets.views.create_report' %}";
 </script>
-<script src="/static/js/index.js"></script>
+<script src="{% static 'js/index.js' %}"></script>
 
 <a href="{% url 'tickets.views.add_ticket' %}">Добавить заявку</a> |
 <a href="javascript:createReport()">Сформировать отчет</a> |

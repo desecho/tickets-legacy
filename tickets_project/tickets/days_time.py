@@ -3,8 +3,11 @@ from django.conf import settings
 
 
 def getTeamDaysOff(team):
-    days_off = team.days_off.split(',')
-    days_off = [int(day) for day in days_off]
+    if team.days_off:
+        days_off = team.days_off.split(',')
+        days_off = [int(day) for day in days_off]
+    else:
+        days_off = []
     return days_off
 
 
