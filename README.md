@@ -41,7 +41,6 @@ You can use [ubuntu-vm](https://github.com/desecho/ubuntu-vm) as a development V
 
 To run in docker run:
 ```bash
-make build
 make run 
 ```
 
