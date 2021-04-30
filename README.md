@@ -23,7 +23,7 @@ Users can add and edit tickets. Administrators can close tickets. Superadministr
 * Bower
 * MySQL. You can use [mysql-docker](https://github.com/desecho/mysql-docker)
 
-You can use Use [ubuntu-vm](https://github.com/desecho/ubuntu-vm) as a development VM.
+You can use [ubuntu-vm](https://github.com/desecho/ubuntu-vm) as a development VM.
 
 ## Installation instructions
 
