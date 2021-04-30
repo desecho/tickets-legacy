@@ -23,6 +23,8 @@ Users can add and edit tickets. Administrators can close tickets. Superadministr
 * Bower
 * MySQL. You can use [mysql-docker](https://github.com/desecho/mysql-docker)
 
+You can use Use [ubuntu-vm](https://github.com/desecho/ubuntu-vm) as a development VM.
+
 ## Installation instructions
 
 * Modify the variables in the following file if needed:
@@ -37,7 +39,11 @@ Users can add and edit tickets. Administrators can close tickets. Superadministr
 
 ## Running 
 
-Run `make run` to run in Docker.  
+To run in docker run:
+```bash
+make build
+make run 
+```
 
 Open http://localhost:8000/ to access the web application.  
 Open http://localhost:8000/admin to access the admin section.
