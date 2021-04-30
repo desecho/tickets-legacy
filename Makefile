@@ -55,7 +55,7 @@ help:
 
 .PHONY: bootstrap
 ## Bootstrap project | Installation
-bootstrap: create-db bower-install docker-build syncdb migrate 
+bootstrap: create-db bower-install build syncdb migrate 
 
 .PHONY: bower-install
 ## Bower install
